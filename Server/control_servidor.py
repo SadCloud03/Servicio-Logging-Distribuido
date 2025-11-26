@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 import funciones
 
 tokens_servicios = {
-    "XYZ123": ""
+    "XYZ123": "Servicio1"
 }
 
 app = Flask(__name__)

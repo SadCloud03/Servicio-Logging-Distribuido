@@ -1,5 +1,43 @@
 import sqlite3
 from datetime import datetime, timezone
+import time
+import random
+import requests
+
+class servicio():
+
+    def __init__(self, nombre_servicio, servicios, mensajes):
+        self.nombre_servicio = nombre_servicio
+        self.servicios = servicios
+        self.mensajes = mensajes
+        self.severidades = ["INFO","WARNING","ERROR"]
+ 
+
+    def creacion_logs(self):
+        # ---- combinaciones ----
+        log = {
+            "timestamp" : datetime.now(timezone.utc).isoformat(),
+            "service" : random.choice(self.servicios),
+            "severity" : random.choice(self.severidades),
+            "message" : random.choice(self.mensajes)
+        }
+        return log
+
+    def envio_log(self, cantidad, url_server):
+
+        for i in range(cantidad):
+            log = self.creacion_logs()
+
+            try: 
+                response = requests.post(url_server, json=log, headers={"Authorization" : "XYZ123"})
+                if response.status_code == 200:
+                    print("se logro enviar")
+                else:
+                    print("no se logro enviar")
+            except Exception as e:
+                print(f"Error de conexion {e}")
+            
+            time.sleep(1)
 
 def revisar_log(datos):
     contenido_json = [
